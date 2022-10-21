@@ -113,6 +113,11 @@ function searchByName(people) {
     });
     return foundPerson;
 }
+
+function searchByTraits() { //THIS FUNCTION IS FOR THE ANSWER "NO" AT BEGINNING OF PROMPT
+
+}
+
 // End of searchByName()
 
 /**
@@ -155,9 +160,11 @@ function displayPerson(person) {
 
 function findPersonFamily(person) {
     let personFamily = `Parents: ${person.parents}\n`;
-    personFamily += `Current Spouse: ${person.currentSpouse}\n`;
+    personFamily += `Current Spouse: ${person.currentSpouse}\n`; // CREATE FUNCTIONS FOR EACH FAMILY MEMBER TYPE
+                                                                // TO CALL AGAIN LATER WITHIN THE findPersonFamily FUNCTION
+    personFamily += `Sibling(s): ${person.}`
 
-    alert(personFamily);
+    displayPeople(personFamily);
 }
 
 function findPersonDescendants(person, people) {
