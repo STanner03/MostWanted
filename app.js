@@ -122,13 +122,13 @@ function searchByName(people) {
  * @param {Array} people        A collection of person objects.
  */
 function displayPeople(people) {
-    alert(
-        people
-            .map(function (person) {
-                return `${person.firstName} ${person.lastName}`;
-            })
-            .join("\n")
-    );
+    const fullNames = people
+    .map(function (person) {
+        return `${person.firstName} ${person.lastName}`;
+    })
+    .join("\n")
+
+    alert(fullNames);
 }
 // End of displayPeople()
 
@@ -159,6 +159,19 @@ function findPersonFamily(person) {
 
     alert(personFamily);
 }
+
+function findPersonDescendants(person, people) {
+    let children = people.filter(function(el){
+        if(el.parents.includes(person.id)) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    })
+    displayPeople(children)
+}
+
 // End of displayPerson()
 
 /**
