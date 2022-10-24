@@ -174,7 +174,7 @@ function displayPerson(person) {
 
 function findPersonFamily(person, people) {
     // let personFamily = findParents(person, people);
-    let personFamily = person.currentSpouse
+    let personFamily =  findSpouse(person, people);
     // personFamily += `Sibling(s): ${person.}`
 
     // const siblings = [{firstName: "Amii", lastName: "Pafoy"},{firstName: "John", lastName: "Smith"}]
@@ -208,10 +208,17 @@ function findParents(person, people) {
  * @returns 
  */
 
-// function findSpouse(person, people) {
-//     let spouse = people.currentSpouse.includes(person.id)
-//     return spouse;
-// }
+function findSpouse(person, people) {
+    let spouse = people.filter(
+
+        function(el){
+       return person.currentSpouse === el.id
+    }
+    
+    )
+    return spouse;
+}
+
 
 
 
