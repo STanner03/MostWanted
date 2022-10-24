@@ -42,6 +42,20 @@ function app(people) {
     mainMenu(searchResults, people);
 }
 // End of app()
+personTemplate = 
+     {
+        "id": 0,
+        "firstName": "",
+        "lastName": "",
+        "gender": "",
+        "dob": "",
+        "height": 0,
+        "weight": 0,
+        "eyeColor": "",
+        "occupation": "",
+        "parents": [],
+        "currentSpouse": 0
+    }
 
 /**
  * After finding a single person, we pass in the entire person-object that we found,
@@ -158,14 +172,52 @@ function displayPerson(person) {
     alert(personInfo);
 }
 
-function findPersonFamily(person) {
-    let personFamily = `Parents: ${person.parents}\n`;
-    personFamily += `Current Spouse: ${person.currentSpouse}\n`; // CREATE FUNCTIONS FOR EACH FAMILY MEMBER TYPE
-                                                                // TO CALL AGAIN LATER WITHIN THE findPersonFamily FUNCTION
-    personFamily += `Sibling(s): ${person.}`
+function findPersonFamily(person, people) {
+    // let personFamily = findParents(person, people);
+    let personFamily = person.currentSpouse
+    // personFamily += `Sibling(s): ${person.}`
+
+    // const siblings = [{firstName: "Amii", lastName: "Pafoy"},{firstName: "John", lastName: "Smith"}]
 
     displayPeople(personFamily);
+    // displayPeople([...personFamily, ...siblings]); SPREAD
 }
+
+/**
+ * 
+ * @param {{}} person 
+ * @param {[]} people 
+ * @returns 
+ */
+function findParents(person, people) {
+    let parents = people.filter(
+
+        function(el){
+       return person.parents.includes(el.id) 
+    }
+    
+    )
+    return parents;
+}
+
+
+/**
+ * 
+ * @param {{}} person 
+ * @param {[]} people 
+ * @returns 
+ */
+
+// function findSpouse(person, people) {
+//     let spouse = people.currentSpouse.includes(person.id)
+//     return spouse;
+// }
+
+
+
+// function findSiblings() {
+
+// }
 
 function findPersonDescendants(person, people) {
     let children = people.filter(function(el){
@@ -221,3 +273,4 @@ function chars(input) {
 //////////////////////////////////////////* End Of Starter Code *//////////////////////////////////////////
 // Any additional functions can be written below this line 👇. Happy Coding! 😁
 
+// COME BACK AND CREATE CUSTOM ALERT FUNCTION TO DISPLAY FAMILY NAME RELATIONS (I.E. PARENTS:, SIBLINGS:, ETC.. )
