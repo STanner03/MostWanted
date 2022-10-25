@@ -140,7 +140,7 @@ function searchByTraits() { //THIS FUNCTION IS FOR THE ANSWER "NO" AT BEGINNING 
  * to the user in the form of an alert().
  * @param {Array} people        A collection of person objects.
  */
-function displayPeople(people, title) {
+function displayPeople(people) {
     const fullNames = people
     .map(function (person) {
         return `${person.firstName} ${person.lastName}`;
@@ -148,6 +148,18 @@ function displayPeople(people, title) {
     .join("\n")
 
     alert(fullNames);
+}
+
+function relationTitle(people) {
+    {
+        const fullNames = people
+        .map(function (person) {
+            return `${person.firstName} ${person.lastName}`;
+        })
+        .join("\n")
+    
+        return(fullNames);
+    }
 }
 // End of displayPeople()
 
@@ -173,13 +185,13 @@ function displayPerson(person) {
 }
 
 function findPersonFamily(person, people) {
-    let parents = findParents(person, people);
-    let spouse = findSpouse(person, people);
-    let siblings = findSiblings(person, people);
+    let parents = relationTitle(findParents(person, people));
+    let spouse = relationTitle(findSpouse(person, people));
+    let siblings = relationTitle(findSiblings(person, people));
 
     // let personFamily = "Parents: " + parents + "\n"
     // personFamily += "Spouse: " + spouse + "\n"
-    displayPeople([...parents,...spouse,...siblings]);
+    alert(`Parents:\n${parents}\n\nSpouse:\n${spouse}\n\nSiblings:\n${siblings}`);
 }
 
 /**
