@@ -140,7 +140,7 @@ function searchByTraits() { //THIS FUNCTION IS FOR THE ANSWER "NO" AT BEGINNING 
  * to the user in the form of an alert().
  * @param {Array} people        A collection of person objects.
  */
-function displayPeople(people) {
+function displayPeople(people, title) {
     const fullNames = people
     .map(function (person) {
         return `${person.firstName} ${person.lastName}`;
@@ -173,14 +173,13 @@ function displayPerson(person) {
 }
 
 function findPersonFamily(person, people) {
-    // let personFamily = findParents(person, people);
-    let personFamily =  findSpouse(person, people);
-    // personFamily += `Sibling(s): ${person.}`
+    let parents = findParents(person, people);
+    let spouse = findSpouse(person, people);
+    let siblings = findSiblings(person, people);
 
-    // const siblings = [{firstName: "Amii", lastName: "Pafoy"},{firstName: "John", lastName: "Smith"}]
-
-    displayPeople(personFamily);
-    // displayPeople([...personFamily, ...siblings]); SPREAD
+    // let personFamily = "Parents: " + parents + "\n"
+    // personFamily += "Spouse: " + spouse + "\n"
+    displayPeople([...parents,...spouse,...siblings]);
 }
 
 /**
@@ -210,21 +209,35 @@ function findParents(person, people) {
 
 function findSpouse(person, people) {
     let spouse = people.filter(
-
+        
         function(el){
-       return person.currentSpouse === el.id
+            return person.currentSpouse === el.id
+        }
+        
+        )
+        return spouse;
     }
     
-    )
-    return spouse;
+ /**
+  * 
+  * @param {{}} person 
+  * @param {[]} people 
+  * @returns 
+ */
+
+function findSiblings(person, people) 
+{
+    let siblings = people.filter(function(el)
+     {
+        return person.parents[0] === el.parents[0] && person.parents[1] === el.parents[1]
+         || person.parents[0] === el.parents[1] && person.parents[1] === el.parents[0]
+
+         })
+
+    return siblings; 
 }
 
 
-
-
-// function findSiblings() {
-
-// }
 
 function findPersonDescendants(person, people) {
     let children = people.filter(function(el){
@@ -281,3 +294,9 @@ function chars(input) {
 // Any additional functions can be written below this line 👇. Happy Coding! 😁
 
 // COME BACK AND CREATE CUSTOM ALERT FUNCTION TO DISPLAY FAMILY NAME RELATIONS (I.E. PARENTS:, SIBLINGS:, ETC.. )
+
+
+
+
+    // const siblings = [{firstName: "Amii", lastName: "Pafoy"},{firstName: "John", lastName: "Smith"}]
+    // displayPeople([...personFamily, ...siblings]); SPREAD
