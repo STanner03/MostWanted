@@ -128,36 +128,41 @@ function searchByName(people) {
     return foundPerson;
 }
 
-function searchByTraits(people) { //THIS FUNCTION IS FOR THE ANSWER "NO" AT BEGINNING OF PROMPT
-    let traitSearch = promptFor("Please choose the desired criteria to search by;\nGender: M/F\nDoB: mm/dd/yyyy\nHeight: # of inches\nWeight: # of Lbs.\nEye Color:\nOccupation:", chars).toLowerCase();
+function searchByTraits(people) {
+    let multipleTraitSearch = promptFor("Do you want to search for a single trait or multiple traits?\nInput:\n1 for single trait\n2 for multiple traits.", chars);
+    switch (multipleTraitSearch) {
+        case "1":
+            let traitSearch = promptFor("Please choose the desired criteria to search by;\nGender:\nDoB:\nHeight:\nWeight:\nEye Color:\nOccupation:", chars).toLowerCase();
+            switch (traitSearch) {
+            case "gender":
+                searchByGender(people);
+                break;
+            case "dob":
+                searchByDOB(people);
+                break;
+            case "height":
+                searchByHeight();
+                break;
+            case "weight":
+                searchByWeight();
+                break;
+            case "eye color":
+                searchByEyeColor();
+                break;
+            case "occupation":
+                searchByOccupation();
+                break;
+            case "restart":
+                app(people);
+                break;
+            case "quit":
+                return;
+            default:
+                return searchByTraits(person, people);
+        }
+        case "2":
 
-    switch (traitSearch) {
-        case "gender":
-            searchByGender(people);
-            break;
-        case "dob":
-            searchByDOB(people);
-            break;
-        case "height":
-            searchByHeight();
-            break;
-        case "weight":
-            searchByWeight();
-            break;
-        case "eye color":
-            searchByEyeColor();
-            break;
-        case "occupation":
-            searchByOccupation();
-            break;
-        case "restart":
-            app(people);
-            break;
-        case "quit":
-            return;
-        default:
-            return searchByTraits(person, people);
-    }
+}
     // if(traitSearch === "gender"){
     //     searchGender(people)
     // }
@@ -187,7 +192,28 @@ function searchByGender(people = [personTemplate]) {
     mainMenu(searchResults, people);
 }
 
+function searchByDOB(people) {
+    let dobInput = promptFor("What is the DoB of the person you're looking for? i.e. mm/dd/yyy", chars).toLocaleLowerCase();
+    let personDOB = people.filter(function(el){
+        return dobInput === el.dob
+    })
+    let dobArray = relationTitle(personDOB);
+    let dobPrompt = promptFor(`Is the person in the list?\n${dobArray}`, chars);
+    let searchResults;
+    switch (dobPrompt) {
+        case "yes":
+            searchResults = searchByName(people);
 
+            break;
+        case "no":
+            searchResults = searchByTraits(people);
+            break;
+        default:
+            searchByTraits(people);
+            break;
+    }
+    mainMenu(searchResults, people);
+}
 
 
 
