@@ -135,10 +135,10 @@ function searchByTraits(people) {
             let traitSearch = promptFor("Please choose the desired criteria to search by;\nGender:\nDoB:\nHeight:\nWeight:\nEye Color:\nOccupation:", chars).toLowerCase();
             switch (traitSearch) {
             case "gender":
-                searchByGender(people);
+                confirmChoice(searchByGender(people), people);
                 break;
             case "dob":
-                searchByDOB(people);
+                confirmChoice(searchByDOB(people), people);
                 break;
             case "height":
                 searchByHeight();
@@ -161,12 +161,31 @@ function searchByTraits(people) {
                 return searchByTraits(person, people);
         }
         case "2":
+            multipleTraits(people);
+    }
 
 }
-    // if(traitSearch === "gender"){
-    //     searchGender(people)
-    // }
-    // return traitSearch
+
+function confirmChoice(param1, people){
+    let traitResults = promptFor(`Is the person in the list?\n${param1}`, chars);
+    let searchResults;
+    switch (traitResults) {
+        case "yes":
+            searchResults = searchByName(people);
+
+            break;
+        case "no":
+            searchResults = searchByTraits(param1);
+            break;
+        default:
+            searchByTraits(people);
+            break;
+    }
+    mainMenu(searchResults, people);
+}
+
+function multipleTraits(people){
+    let multipleSearch = promptFor("Please select the criteria for searching\nGender:\nDoB:\nHeight:\nWeight:\nEye Color:\nOccupation:", chars).toLowerCase();
 }
 
 function searchByGender(people = [personTemplate]) {
@@ -174,22 +193,8 @@ function searchByGender(people = [personTemplate]) {
     let personGender = people.filter(function(el){
         return genderChoice === el.gender
     })
-    let genderArray = relationTitle(personGender);
-    let test1 = promptFor(`Is the person in the list?\n${genderArray}`, chars);
-    let searchResults;
-    switch (test1) {
-        case "yes":
-            searchResults = searchByName(people);
-
-            break;
-        case "no":
-            searchResults = searchByTraits(people);
-            break;
-        default:
-            searchByTraits(people);
-            break;
-    }
-    mainMenu(searchResults, people);
+    let genderArray = returnPeople(personGender);
+    return genderArray;
 }
 
 function searchByDOB(people) {
@@ -197,22 +202,8 @@ function searchByDOB(people) {
     let personDOB = people.filter(function(el){
         return dobInput === el.dob
     })
-    let dobArray = relationTitle(personDOB);
-    let dobPrompt = promptFor(`Is the person in the list?\n${dobArray}`, chars);
-    let searchResults;
-    switch (dobPrompt) {
-        case "yes":
-            searchResults = searchByName(people);
-
-            break;
-        case "no":
-            searchResults = searchByTraits(people);
-            break;
-        default:
-            searchByTraits(people);
-            break;
-    }
-    mainMenu(searchResults, people);
+    let dobArray = returnPeople(personDOB);
+    return dobArray;
 }
 
 
@@ -241,7 +232,7 @@ function displayPeople(people) {
     alert(fullNames);
 }
 
-function relationTitle(people) {
+function returnPeople(people) {
     {
         const fullNames = people
         .map(function (person) {
@@ -276,9 +267,9 @@ function displayPerson(person) {
 }
 
 function findPersonFamily(person, people) {
-    let parents = relationTitle(findParents(person, people));
-    let spouse = relationTitle(findSpouse(person, people));
-    let siblings = relationTitle(findSiblings(person, people));
+    let parents = returnPeople(findParents(person, people));
+    let spouse = returnPeople(findSpouse(person, people));
+    let siblings = returnPeople(findSiblings(person, people));
 
     // let personFamily = "Parents: " + parents + "\n"
     // personFamily += "Spouse: " + spouse + "\n"
@@ -396,10 +387,3 @@ function chars(input) {
 //////////////////////////////////////////* End Of Starter Code *//////////////////////////////////////////
 // Any additional functions can be written below this line 👇. Happy Coding! 😁
 
-// COME BACK AND CREATE CUSTOM ALERT FUNCTION TO DISPLAY FAMILY NAME RELATIONS (I.E. PARENTS:, SIBLINGS:, ETC.. )
-
-
-
-
-    // const siblings = [{firstName: "Amii", lastName: "Pafoy"},{firstName: "John", lastName: "Smith"}]
-    // displayPeople([...personFamily, ...siblings]); SPREAD
