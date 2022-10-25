@@ -42,7 +42,7 @@ function app(people) {
     mainMenu(searchResults, people);
 }
 // End of app()
-personTemplate = 
+let personTemplate = 
      {
         "id": 0,
         "firstName": "",
@@ -128,9 +128,74 @@ function searchByName(people) {
     return foundPerson;
 }
 
-function searchByTraits() { //THIS FUNCTION IS FOR THE ANSWER "NO" AT BEGINNING OF PROMPT
+function searchByTraits(people) { //THIS FUNCTION IS FOR THE ANSWER "NO" AT BEGINNING OF PROMPT
+    let traitSearch = promptFor("Please choose the desired criteria to search by;\nGender: M/F\nDoB: mm/dd/yyyy\nHeight: # of inches\nWeight: # of Lbs.\nEye Color:\nOccupation:", chars).toLowerCase();
 
+    switch (traitSearch) {
+        case "gender":
+            searchByGender(people);
+            break;
+        case "dob":
+            searchByDOB(people);
+            break;
+        case "height":
+            searchByHeight();
+            break;
+        case "weight":
+            searchByWeight();
+            break;
+        case "eye color":
+            searchByEyeColor();
+            break;
+        case "occupation":
+            searchByOccupation();
+            break;
+        case "restart":
+            app(people);
+            break;
+        case "quit":
+            return;
+        default:
+            return searchByTraits(person, people);
+    }
+    // if(traitSearch === "gender"){
+    //     searchGender(people)
+    // }
+    // return traitSearch
 }
+
+function searchByGender(people = [personTemplate]) {
+    let genderChoice = promptFor("Is the person you're looking for Male or Female?", chars).toLowerCase();
+    let personGender = people.filter(function(el){
+        return genderChoice === el.gender
+    })
+    let genderArray = relationTitle(personGender);
+    let test1 = promptFor(`Is the person in the list?\n${genderArray}`, chars);
+    let searchResults;
+    switch (test1) {
+        case "yes":
+            searchResults = searchByName(people);
+
+            break;
+        case "no":
+            searchResults = searchByTraits(people);
+            break;
+        default:
+            searchByTraits(people);
+            break;
+    }
+    mainMenu(searchResults, people);
+}
+
+
+
+
+
+
+
+
+
+
 
 // End of searchByName()
 
