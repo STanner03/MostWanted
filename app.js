@@ -161,10 +161,55 @@ function searchByTraits(people) {
                 return searchByTraits(person, people);
         }
         case "2":
-            multipleTraits(people);
+            confirmChoice(multipleTraits(people), people);
     }
 
 }
+
+/**
+ * 
+ * @param {{}} person 
+ * @param {[]} people 
+ * @returns 
+ */
+
+function multipleTraits(people){
+    let traits = promptFor("Please select the criteria for searching\nGender:\nDoB:\nHeight:\nWeight:\nEye Color:\nOccupation:\nPlease separate choices with commas.\n(i.e.) gender, height, eye color...", chars).toLowerCase();
+    let testTraits = traits.split(",");
+    let whateverVariableName = testTraits.map(function(el){
+        switch(el){
+            case "gender":
+                searchByGender(people)
+                break;
+            case "dob":
+                searchByDOB(people)
+                break;
+            case "height":
+                searchByHeight(people)
+                break;
+            case "weight":
+                searchByWeight(people)
+                break;
+            case "eye color":
+                searchByEyeColor(people)
+                break;
+            case "occupation":
+                searchByOccupation(people)
+                break;
+            default:
+                return multipleTraits(people);
+        }
+    })
+    return whateverVariableName;
+
+
+    // let newTraitSearch = multipleSearch.map(function([key, val]))
+
+    // let searches = people.map(function(el){
+    //     return 
+    // })
+}
+
 
 function confirmChoice(param1, people){
     let traitResults = promptFor(`Is the person in the list?\n${param1}`, chars);
@@ -184,9 +229,6 @@ function confirmChoice(param1, people){
     mainMenu(searchResults, people);
 }
 
-function multipleTraits(people){
-    let multipleSearch = promptFor("Please select the criteria for searching\nGender:\nDoB:\nHeight:\nWeight:\nEye Color:\nOccupation:", chars).toLowerCase();
-}
 
 function searchByGender(people = [personTemplate]) {
     let genderChoice = promptFor("Is the person you're looking for Male or Female?", chars).toLowerCase();
