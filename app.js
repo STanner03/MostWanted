@@ -228,15 +228,15 @@ function confirmChoice(param1, people){
 
 function searchByGender(people = [personTemplate]) {
     let generInput = promptFor("Is the person you're looking for Male or Female?", chars).toLowerCase();
-    let personGender = people.filter(function(el){
+    let personGender = people.filter((el) => {
         return generInput === el.gender
     })
     return personGender;
 }
 
 function searchByDOB(people) {
-    let dobInput = promptFor("What is the DoB of the person you're looking for? i.e. mm/dd/yyy", chars).toLocaleLowerCase();
-    let personDOB = people.filter(function(el){
+    let dobInput = promptFor("What is the DoB of the person you're looking for? i.e. mm/dd/yyy", chars).toLowerCase();
+    let personDOB = people.filter((el) => {
         return dobInput === el.dob
     })
     return personDOB;
@@ -244,7 +244,7 @@ function searchByDOB(people) {
 
 function searchByHeight(people){
     let heightInput = parseInt(promptFor("What is the Height, in inches, of the person you are looking for? i.e. 69 or 65", chars));
-    let personHeight = people.filter(function(el){
+    let personHeight = people.filter((el) => {
         return heightInput === el.height
     })
     return personHeight;
@@ -258,8 +258,12 @@ function searchByWeight(people){
     return personWeight
 }
 
-function searchByEyeColor(){
-
+function searchByEyeColor(people){
+    let eyeColorInput = promptFor("What is the Eye Color of the person you are looking for?", chars).toLowerCase();
+    let personEyeColor = people.filter((el) => {
+        return eyeColorInput === el.eyeColor
+    })
+    return personEyeColor
 }
 
 function searchByOccupation(){
@@ -291,7 +295,7 @@ function displayPeople(people) {
 function returnPeople(people) {
     {
         const fullNames = people
-        .map(function (person) {
+        .map((person) => {
             return `${person.firstName} ${person.lastName}`;
         })
         .join("\n")
@@ -339,7 +343,7 @@ function findPersonFamily(person, people) {
 function findParents(person, people) {
     let parents = people.filter(
 
-        function(el){
+        (el) => {
        return person.parents.includes(el.id) 
     }
     
@@ -358,7 +362,7 @@ function findParents(person, people) {
 function findSpouse(person, people) {
     let spouse = people.filter(
         
-        function(el){
+        (el) => {
             return person.currentSpouse === el.id
         }
         
@@ -375,8 +379,7 @@ function findSpouse(person, people) {
 
 function findSiblings(person, people) 
 {
-    let siblings = people.filter(function(el)
-     {
+    let siblings = people.filter((el) => {
         return person.parents[0] === el.parents[0] && person.parents[1] === el.parents[1]
          || person.parents[0] === el.parents[1] && person.parents[1] === el.parents[0]
 
@@ -388,7 +391,7 @@ function findSiblings(person, people)
 
 
 function findPersonDescendants(person, people) {
-    let children = people.filter(function(el){
+    let children = people.filter((el) => {
         if(el.parents.includes(person.id)) {
             return true;
         }
