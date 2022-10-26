@@ -176,43 +176,40 @@ function searchByTraits(people) {
 function multipleTraits(people){
     let traits = promptFor("Please select the criteria for searching\nGender:\nDoB:\nHeight:\nWeight:\nEye Color:\nOccupation:\nPlease separate choices with commas.\n(i.e.) gender, height, eye color...", chars).toLowerCase();
     let testTraits = traits.split(",");
-    let whateverVariableName = testTraits.map(function(el){
+    // let returnedPeople; 
+    testTraits.map(function(el){
         switch(el){
             case "gender":
-                searchByGender(people)
+                people= searchByGender(people)
                 break;
             case "dob":
-                searchByDOB(people)
+                people = searchByDOB(people)
                 break;
             case "height":
-                searchByHeight(people)
+                people = searchByHeight(people)
                 break;
             case "weight":
-                searchByWeight(people)
+                people = searchByWeight(people)
                 break;
             case "eye color":
-                searchByEyeColor(people)
+                people = searchByEyeColor(people)
                 break;
             case "occupation":
-                searchByOccupation(people)
+                people = searchByOccupation(people)
                 break;
             default:
                 return multipleTraits(people);
         }
+        alert(returnPeople(people));
     })
-    return whateverVariableName;
+    return people;
 
-
-    // let newTraitSearch = multipleSearch.map(function([key, val]))
-
-    // let searches = people.map(function(el){
-    //     return 
-    // })
 }
 
 
 function confirmChoice(param1, people){
-    let traitResults = promptFor(`Is the person in the list?\n${param1}`, chars);
+    let newArray = returnPeople(param1)
+    let traitResults = promptFor(`Is the person in the list?\n${newArray}`, chars);
     let searchResults;
     switch (traitResults) {
         case "yes":
@@ -235,8 +232,7 @@ function searchByGender(people = [personTemplate]) {
     let personGender = people.filter(function(el){
         return genderChoice === el.gender
     })
-    let genderArray = returnPeople(personGender);
-    return genderArray;
+    return personGender;
 }
 
 function searchByDOB(people) {
@@ -244,8 +240,7 @@ function searchByDOB(people) {
     let personDOB = people.filter(function(el){
         return dobInput === el.dob
     })
-    let dobArray = returnPeople(personDOB);
-    return dobArray;
+    return personDOB;
 }
 
 
@@ -313,8 +308,6 @@ function findPersonFamily(person, people) {
     let spouse = returnPeople(findSpouse(person, people));
     let siblings = returnPeople(findSiblings(person, people));
 
-    // let personFamily = "Parents: " + parents + "\n"
-    // personFamily += "Spouse: " + spouse + "\n"
     alert(`Parents:\n${parents}\n\nSpouse:\n${spouse}\n\nSiblings:\n${siblings}`);
 }
 
