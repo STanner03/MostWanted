@@ -132,7 +132,18 @@ function searchByTraits(people) {
     let multipleTraitSearch = parseInt(promptFor("Do you want to search for a single trait or multiple traits?\nInput:\n1 for single trait\n2 for multiple traits.", chars));
     switch (multipleTraitSearch) {
         case 1:
-            let traitSearch = promptFor("Please choose the desired criteria to search by;\nGender:\nDoB:\nHeight:\nWeight:\nEye Color:\nOccupation:", chars).toLowerCase();
+            let trait = singleTrait(people)
+            return trait;
+        case 2:
+            confirmChoice(multipleTraits(people), people);
+        default:
+            return searchByTraits(people);
+    }
+
+}
+
+function singleTrait(people){
+    let traitSearch = promptFor("Please choose the desired criteria to search by;\nGender:\nDoB:\nHeight:\nWeight:\nEye Color:\nOccupation:", chars).toLowerCase();
             switch (traitSearch) {
                 case "gender":
                     let genderChoice = searchByGender(people)
@@ -164,13 +175,8 @@ function searchByTraits(people) {
                 case "quit":
                     return;
                 default:
-                    return searchByTraits(person, people);        
+                    return singleTrait(people);        
             }
-            break;
-        case 2:
-            confirmChoice(multipleTraits(people), people);
-    }
-
 }
 
 /**
@@ -183,7 +189,7 @@ function searchByTraits(people) {
 function multipleTraits(people){
     let traits = promptFor("Please select the criteria for searching\nGender:\nDoB:\nHeight:\nWeight:\nEye Color:\nOccupation:\nPlease separate choices with commas but NO SPACES!!!\n(i.e.) gender,height,eye color...", chars).toLowerCase();
     let traitsArray = traits.split(",");
-    traitsArray.map(function(el){
+    traitsArray.map((el) => {
         switch(el){
             case "gender":
                 people= searchByGender(people)
@@ -206,10 +212,8 @@ function multipleTraits(people){
             default:
                 return multipleTraits(people);
         }
-        alert(returnPeople(people));
     })
     return people;
-
 }
 
 
@@ -222,7 +226,7 @@ function confirmChoice(param1, people){
             searchResults = searchByName(people);
             break;
         case "no":
-            searchResults = searchByTraits(param1);
+            searchResults = searchByTraits(people);
             break;
         default:
             searchByTraits(people);
@@ -232,9 +236,9 @@ function confirmChoice(param1, people){
 
 
 function searchByGender(people = [personTemplate]) {
-    let generInput = promptFor("Is the person you're looking for Male or Female?", chars).toLowerCase();
+    let genderInput = promptFor("Is the person you're looking for Male or Female?", chars).toLowerCase();
     let personGender = people.filter((el) => {
-        return generInput === el.gender
+        return genderInput === el.gender
     })
     return personGender;
 }
@@ -339,7 +343,6 @@ function findPersonFamily(person, people) {
     let parents = returnPeople(findParents(person, people));
     let spouse = returnPeople(findSpouse(person, people));
     let siblings = returnPeople(findSiblings(person, people));
-
     return (`Parents:\n${parents}\n\nSpouse:\n${spouse}\n\nSiblings:\n${siblings}`);
 }
 
@@ -350,13 +353,9 @@ function findPersonFamily(person, people) {
  * @returns 
  */
 function findParents(person, people) {
-    let parents = people.filter(
-
-        (el) => {
+    let parents = people.filter((el) => {
        return person.parents.includes(el.id) 
-    }
-    
-    )
+    })
     return parents;
 }
 
@@ -369,13 +368,9 @@ function findParents(person, people) {
  */
 
 function findSpouse(person, people) {
-    let spouse = people.filter(
-        
-        (el) => {
+    let spouse = people.filter((el) => {
             return person.currentSpouse === el.id
-        }
-        
-        )
+        })
         return spouse;
     }
     
@@ -386,19 +381,14 @@ function findSpouse(person, people) {
   * @returns 
  */
 
-function findSiblings(person, people) 
-{
+function findSiblings(person, people) {
     let siblings = people.filter((el) => {
-
         return (person.parents[0] === el.parents[0] && person.parents[1] === el.parents[1]
          || person.parents[0] === el.parents[1] && person.parents[1] === el.parents[0])
          && el.id !== person.id
-
          })
-
     return siblings; 
 }
-
 
 
 function findPersonDescendants(person, people) {
