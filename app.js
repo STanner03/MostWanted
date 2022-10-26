@@ -141,16 +141,16 @@ function searchByTraits(people) {
                 confirmChoice(searchByDOB(people), people);
                 break;
             case "height":
-                searchByHeight();
+                confirmChoice(searchByHeight(people), people);
                 break;
             case "weight":
-                searchByWeight();
+                confirmChoice(searchByWeight(people), people);
                 break;
             case "eye color":
-                searchByEyeColor();
+                confirmChoice(searchByEyeColor(people), people);
                 break;
             case "occupation":
-                searchByOccupation();
+                confirmChoice(searchByOccupation(people), people);
                 break;
             case "restart":
                 app(people);
@@ -174,9 +174,8 @@ function searchByTraits(people) {
  */
 
 function multipleTraits(people){
-    let traits = promptFor("Please select the criteria for searching\nGender:\nDoB:\nHeight:\nWeight:\nEye Color:\nOccupation:\nPlease separate choices with commas.\n(i.e.) gender, height, eye color...", chars).toLowerCase();
+    let traits = promptFor("Please select the criteria for searching\nGender:\nDoB:\nHeight:\nWeight:\nEye Color:\nOccupation:\nPlease separate choices with commas but NO SPACES!!!\n(i.e.) gender,height,eye color...", chars).toLowerCase();
     let testTraits = traits.split(",");
-    // let returnedPeople; 
     testTraits.map(function(el){
         switch(el){
             case "gender":
@@ -243,9 +242,25 @@ function searchByDOB(people) {
     return personDOB;
 }
 
+function searchByHeight(people){
+    let heightInput = parseInt(promptFor("What is the Height, in inches, of the person you are looking for? i.e. 69 or 65", chars));
+    let personHeight = people.filter(function(el){
+        return heightInput === el.height
+    })
+    return personHeight;
+}
 
+function searchByWeight(){
 
+}
 
+function searchByEyeColor(){
+
+}
+
+function searchByOccupation(){
+
+}
 
 
 
