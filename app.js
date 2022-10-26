@@ -227,9 +227,9 @@ function confirmChoice(param1, people){
 
 
 function searchByGender(people = [personTemplate]) {
-    let genderChoice = promptFor("Is the person you're looking for Male or Female?", chars).toLowerCase();
+    let generInput = promptFor("Is the person you're looking for Male or Female?", chars).toLowerCase();
     let personGender = people.filter(function(el){
-        return genderChoice === el.gender
+        return generInput === el.gender
     })
     return personGender;
 }
@@ -250,8 +250,12 @@ function searchByHeight(people){
     return personHeight;
 }
 
-function searchByWeight(){
-
+function searchByWeight(people){
+    let weightInput = parseInt(promptFor("What is the Weight, in pounds, of the person you are looking for? i.e. 155 or 192", chars));
+    let personWeight = people.filter((el) => {
+        return weightInput === el.weight
+    })
+    return personWeight
 }
 
 function searchByEyeColor(){
