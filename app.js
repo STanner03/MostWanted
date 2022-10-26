@@ -129,38 +129,45 @@ function searchByName(people) {
 }
 
 function searchByTraits(people) {
-    let multipleTraitSearch = promptFor("Do you want to search for a single trait or multiple traits?\nInput:\n1 for single trait\n2 for multiple traits.", chars);
+    let multipleTraitSearch = parseInt(promptFor("Do you want to search for a single trait or multiple traits?\nInput:\n1 for single trait\n2 for multiple traits.", chars));
     switch (multipleTraitSearch) {
-        case "1":
+        case 1:
             let traitSearch = promptFor("Please choose the desired criteria to search by;\nGender:\nDoB:\nHeight:\nWeight:\nEye Color:\nOccupation:", chars).toLowerCase();
             switch (traitSearch) {
-            case "gender":
-                confirmChoice(searchByGender(people), people);
-                break;
-            case "dob":
-                confirmChoice(searchByDOB(people), people);
-                break;
-            case "height":
-                confirmChoice(searchByHeight(people), people);
-                break;
-            case "weight":
-                confirmChoice(searchByWeight(people), people);
-                break;
-            case "eye color":
-                confirmChoice(searchByEyeColor(people), people);
-                break;
-            case "occupation":
-                confirmChoice(searchByOccupation(people), people);
-                break;
-            case "restart":
-                app(people);
-                break;
-            case "quit":
-                return;
-            default:
-                return searchByTraits(person, people);
-        }
-        case "2":
+                case "gender":
+                    let genderChoice = searchByGender(people)
+                    confirmChoice(genderChoice, people);
+                    return genderChoice;
+                case "dob":
+                    let dobChoice = searchByDOB(people)
+                    confirmChoice(dobChoice, people);
+                    return dobChoice;
+                case "height":
+                    let heightChoice = searchByHeight(people)
+                    confirmChoice(heightChoice, people);
+                    return heightChoice;
+                case "weight":
+                    let weightChoice = searchByWeight(people)
+                    confirmChoice(weightChoice, people);
+                    return weightChoice;
+                case "eye color":
+                    let eyeColorChoice = searchByEyeColor(people)
+                    confirmChoice(eyeColorChoice, people);
+                    return eyeColorChoice;
+                case "occupation":
+                    let occupationChoice = searchByOccupation(people)
+                    confirmChoice(occupationChoice, people);
+                    return occupationChoice;
+                case "restart":
+                    app(people);
+                    break;
+                case "quit":
+                    return;
+                default:
+                    return searchByTraits(person, people);        
+            }
+            break;
+        case 2:
             confirmChoice(multipleTraits(people), people);
     }
 
@@ -175,8 +182,8 @@ function searchByTraits(people) {
 
 function multipleTraits(people){
     let traits = promptFor("Please select the criteria for searching\nGender:\nDoB:\nHeight:\nWeight:\nEye Color:\nOccupation:\nPlease separate choices with commas but NO SPACES!!!\n(i.e.) gender,height,eye color...", chars).toLowerCase();
-    let testTraits = traits.split(",");
-    testTraits.map(function(el){
+    let traitsArray = traits.split(",");
+    traitsArray.map(function(el){
         switch(el){
             case "gender":
                 people= searchByGender(people)
@@ -213,7 +220,6 @@ function confirmChoice(param1, people){
     switch (traitResults) {
         case "yes":
             searchResults = searchByName(people);
-
             break;
         case "no":
             searchResults = searchByTraits(param1);
@@ -222,7 +228,6 @@ function confirmChoice(param1, people){
             searchByTraits(people);
             break;
     }
-    mainMenu(searchResults, people);
 }
 
 
@@ -266,8 +271,12 @@ function searchByEyeColor(people){
     return personEyeColor
 }
 
-function searchByOccupation(){
-
+function searchByOccupation(people){
+    let occupationInput = promptFor("What is the Occupation of the person you are looking for?", chars).toLowerCase();
+    let personOccupation = people.filter((el) => {
+        return occupationInput === el.occupation
+    })
+    return personOccupation
 }
 
 
@@ -323,7 +332,7 @@ function displayPerson(person) {
     personInfo += `Current Spouse: ${person.currentSpouse}\n`;
 
     //! TODO #1a: finish getting the rest of the information to display //////////////////////////////////////////
-    alert(personInfo);
+    return personInfo;
 }
 
 function findPersonFamily(person, people) {
@@ -331,7 +340,7 @@ function findPersonFamily(person, people) {
     let spouse = returnPeople(findSpouse(person, people));
     let siblings = returnPeople(findSiblings(person, people));
 
-    alert(`Parents:\n${parents}\n\nSpouse:\n${spouse}\n\nSiblings:\n${siblings}`);
+    return (`Parents:\n${parents}\n\nSpouse:\n${spouse}\n\nSiblings:\n${siblings}`);
 }
 
 /**
@@ -380,8 +389,10 @@ function findSpouse(person, people) {
 function findSiblings(person, people) 
 {
     let siblings = people.filter((el) => {
-        return person.parents[0] === el.parents[0] && person.parents[1] === el.parents[1]
-         || person.parents[0] === el.parents[1] && person.parents[1] === el.parents[0]
+
+        return (person.parents[0] === el.parents[0] && person.parents[1] === el.parents[1]
+         || person.parents[0] === el.parents[1] && person.parents[1] === el.parents[0])
+         && el.id !== person.id
 
          })
 
@@ -399,7 +410,8 @@ function findPersonDescendants(person, people) {
             return false;
         }
     })
-    displayPeople(children)
+    let personDescendant = returnPeople(children)
+    return personDescendant
 }
 
 // End of displayPerson()
